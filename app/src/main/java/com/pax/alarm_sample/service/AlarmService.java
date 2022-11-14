@@ -27,18 +27,21 @@ public class AlarmService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        alarmDateTime = intent.getStringExtra("alarm_time");
+        alarmDateTime = intent.getStringExtra("startTime");
         // taskId用于区分不同的任务
-        int taskId = intent.getIntExtra("task_id", 0);
+        int taskId = intent.getIntExtra("requestCode", 0);
 
         Log.d("AlarmService", "executed at " + new Date().toString()
                 + " @Thread id：" + Thread.currentThread().getId());
 
         long alarmDateTimeMillis = DateTimeUtil.stringToMillis(alarmDateTime);
 
-        AlarmManagerUtil.sendRepeatAlarmBroadcast(this, taskId,
-                AlarmManager.RTC_WAKEUP, alarmDateTimeMillis, 10 * 1000,
-                AlarmReceiver.class);
+//        AlarmManagerUtil.sendRepeatAlarmBroadcast(this, taskId,
+//                AlarmManager.RTC_WAKEUP, alarmDateTimeMillis, 60 * 1000,
+//                AlarmReceiver.class);
+
+        AlarmManagerUtil.sendExactAndAllowWhileIdleBroadcast(this, taskId,
+                AlarmManager.RTC_WAKEUP, alarmDateTimeMillis, AlarmReceiver.class);
 
     }
 
