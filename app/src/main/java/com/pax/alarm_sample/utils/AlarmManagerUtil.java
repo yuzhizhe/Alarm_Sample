@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 /**
@@ -30,10 +31,16 @@ public class AlarmManagerUtil {
         AlarmManager mgr = getAlarmManager(context);
 
         Intent intent = new Intent(context, cls);
-        PendingIntent pi = PendingIntent.getBroadcast(context, requestCode,
-                intent, 0);
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R){
+            pendingIntent = PendingIntent.getBroadcast(context, requestCode,
+                    intent,PendingIntent.FLAG_IMMUTABLE);
+        }else{
+            pendingIntent = PendingIntent.getBroadcast(context, requestCode,
+                    intent,PendingIntent.FLAG_ONE_SHOT);
+        }
 
-        mgr.set(type, triggerAtTime, pi);
+        mgr.set(type, triggerAtTime, pendingIntent);
     }
 
     // 取消指定requestCode的定时任务
@@ -46,10 +53,16 @@ public class AlarmManagerUtil {
         AlarmManager mgr = getAlarmManager(context);
 
         Intent intent = new Intent(context, cls);
-        PendingIntent pi = PendingIntent.getBroadcast(context, requestCode,
-                intent, 0);
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R){
+            pendingIntent = PendingIntent.getBroadcast(context, requestCode,
+                    intent,PendingIntent.FLAG_IMMUTABLE);
+        }else{
+            pendingIntent = PendingIntent.getBroadcast(context, requestCode,
+                    intent,PendingIntent.FLAG_ONE_SHOT);
+        }
 
-        mgr.cancel(pi);
+        mgr.cancel(pendingIntent);
         ToastUtil.showShort(context, "取消定时服务成功" + " @requestCode:" + requestCode);
         Log.d("取消定时服务成功", "@requestCode:" + requestCode);
     }
@@ -67,10 +80,16 @@ public class AlarmManagerUtil {
         AlarmManager mgr = getAlarmManager(context);
 
         Intent intent = new Intent(context, cls);
-        PendingIntent pi = PendingIntent.getBroadcast(context, requestCode,
-                intent, 0);
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R){
+            pendingIntent = PendingIntent.getBroadcast(context, requestCode,
+                    intent,PendingIntent.FLAG_IMMUTABLE);
+        }else{
+            pendingIntent = PendingIntent.getBroadcast(context, requestCode,
+                    intent,PendingIntent.FLAG_ONE_SHOT);
+        }
 
-        mgr.setRepeating(type, startTime, cycleTime, pi);
+        mgr.setRepeating(type, startTime, cycleTime, pendingIntent);
     }
 
     // 息屏，低电压执行定时任务
@@ -85,9 +104,15 @@ public class AlarmManagerUtil {
         AlarmManager mgr = getAlarmManager(context);
 
         Intent intent = new Intent(context, cls);
-        PendingIntent pi = PendingIntent.getBroadcast(context, requestCode,
-                intent, 0);
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R){
+            pendingIntent = PendingIntent.getBroadcast(context, requestCode,
+                    intent,PendingIntent.FLAG_IMMUTABLE);
+        }else{
+            pendingIntent = PendingIntent.getBroadcast(context, requestCode,
+                    intent,PendingIntent.FLAG_ONE_SHOT);
+        }
 
-        mgr.setExactAndAllowWhileIdle(type, startTime, pi);
+        mgr.setExactAndAllowWhileIdle(type, startTime, pendingIntent);
     }
 }
