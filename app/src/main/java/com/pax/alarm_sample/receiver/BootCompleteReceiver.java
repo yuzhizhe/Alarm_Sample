@@ -10,6 +10,7 @@ package com.pax.alarm_sample.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 import com.pax.alarm_sample.service.AlarmService;
@@ -33,9 +34,14 @@ public class BootCompleteReceiver extends BroadcastReceiver {
         ToastUtil.showShort(context, "定时服务开机启动");
         Intent i = new Intent(context, AlarmService.class);
         // 获取3分钟之后的日期时间字符串
-        i.putExtra("alarm_time",
+        i.putExtra("startTime",
                 DateTimeUtil.getNLaterDateTimeString(Calendar.MINUTE, 3));
-        i.putExtra("task_id", mTaskId);
-        context.startService(i);
+        i.putExtra("requestCode", 1001);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(i);
+        } else {
+            context.startService(i);
+        }
     }
 }

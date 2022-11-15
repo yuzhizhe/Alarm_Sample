@@ -20,9 +20,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         AlarmManagerUtil.sendExactAndAllowWhileIdleBroadcast(context, 1001,
-                AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 120*1000, AlarmReceiver.class);
-        ToastUtil.showShort(context,
-                "从服务启动广播：at " + DateTimeUtil.getCurrentDateTimeString());
+                AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3*60*1000, AlarmReceiver.class);
         Log.d("Alarm", "从服务启动广播：at " + DateTimeUtil.getCurrentDateTimeString());
     }
 
